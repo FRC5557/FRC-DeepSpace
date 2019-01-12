@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 /**
  * Add your docs here.
@@ -23,12 +24,21 @@ public class DriveSubsystem extends Subsystem {
   private WPI_VictorSPX leftRearVictor = new WPI_VictorSPX(RobotMap.LEFT_REAR_MOTOR);
   private WPI_VictorSPX rightRearVictor = new WPI_VictorSPX(RobotMap.RIGHT_REAR_MOTOR);
 
+  private WPI_TalonSRX leftFrontTalon = new WPI_TalonSRX(RobotMap.LEFT_REAR_MOTOR);
+  private WPI_TalonSRX rightFrontTalon = new WPI_TalonSRX(RobotMap.RIGHT_FRONT_MOTOR);
+  private WPI_TalonSRX leftRearTalon = new WPI_TalonSRX(RobotMap.LEFT_REAR_MOTOR);
+  private WPI_TalonSRX rightRearTalon = new WPI_TalonSRX(RobotMap.RIGHT_REAR_MOTOR);
+
   private WPI_VictorSPX testMotor = new WPI_VictorSPX(0);
 
   ControllerSubsytem control = new ControllerSubsytem();
 
-  SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftFrontVictor, leftRearVictor);
-	SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightFrontVictor, rightRearVictor);
+  // SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftFrontVictor, leftRearVictor);
+	// SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightFrontVictor, rightRearVictor);
+  // DifferentialDrive difDrive = new DifferentialDrive(leftGroup, rightGroup);
+  
+  SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftFrontTalon, leftRearTalon);
+	SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightFrontTalon, rightRearTalon);
 	DifferentialDrive difDrive = new DifferentialDrive(leftGroup, rightGroup);
 
 
@@ -50,10 +60,17 @@ public class DriveSubsystem extends Subsystem {
 	}
 
   public void setMotorsCoast() {
-    leftFrontVictor.setNeutralMode(NeutralMode.Coast);
-    rightFrontVictor.setNeutralMode(NeutralMode.Coast);
-    leftRearVictor.setNeutralMode(NeutralMode.Coast);
-    rightRearVictor.setNeutralMode(NeutralMode.Coast);
+    // leftFrontVictor.setNeutralMode(NeutralMode.Coast);
+    // rightFrontVictor.setNeutralMode(NeutralMode.Coast);
+    // leftRearVictor.setNeutralMode(NeutralMode.Coast);
+    // rightRearVictor.setNeutralMode(NeutralMode.Coast);
+
+
+    leftFrontTalon.setNeutralMode(NeutralMode.Coast);
+    rightFrontTalon.setNeutralMode(NeutralMode.Coast);
+    leftRearTalon.setNeutralMode(NeutralMode.Coast);
+    rightRearTalon.setNeutralMode(NeutralMode.Coast);
+    
   }
 
   public void computerDrive(double speed, double rotate) {

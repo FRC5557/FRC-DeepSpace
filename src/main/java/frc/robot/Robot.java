@@ -120,10 +120,10 @@ public class Robot extends TimedRobot {
     System.out.println("Teleop Periodic!");
 
     // run this command for actual driving
-    // drive.drive();
+    drive.drive();
 
     // below command is for that 1 test motor on beta bot
-    drive.testMotors();
+    // drive.testMotors();
   }
 
 
