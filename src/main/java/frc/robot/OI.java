@@ -21,12 +21,12 @@ public class OI {
     public static final Joystick controller = new Joystick(RobotMap.JOYSTICK_DRIVE_ONE);
     public static final I2C colorSensor = new I2C(I2C.Port.kOnboard, 0x39);
 
-    public final Button hatchForwardButton = new JoystickButton(controller, RobotMap.HATCH_FORWARD_BUTTON);
+    // public final Button hatchForwardButton = new JoystickButton(controller, RobotMap.HATCH_FORWARD_BUTTON);
     // add buttons here when we know what our hatch system is doing
 
     public OI() {
         // when we make some arm buttons or such, modify code here
-        hatchForwardButton.whenPressed(new PneumaticsTestCommand(1, 2));
+        // hatchForwardButton.whenPressed(new PneumaticsTestCommand(1, 2));
         //TODO: HAVE COMMAND FOR EACH PNEUMATICS THINGY AND MAP TO BUTTONS
         
         

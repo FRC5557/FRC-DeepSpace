@@ -7,6 +7,7 @@
 
 package frc.robot;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
@@ -19,17 +20,17 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 public class DriveSubsystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  private WPI_VictorSPX leftFrontVictor = new WPI_VictorSPX(RobotMap.LEFT_REAR_MOTOR);
-  private WPI_VictorSPX rightFrontVictor = new WPI_VictorSPX(RobotMap.RIGHT_FRONT_MOTOR);
-  private WPI_VictorSPX leftRearVictor = new WPI_VictorSPX(RobotMap.LEFT_REAR_MOTOR);
-  private WPI_VictorSPX rightRearVictor = new WPI_VictorSPX(RobotMap.RIGHT_REAR_MOTOR);
+  // private WPI_VictorSPX leftFrontVictor = new WPI_VictorSPX(RobotMap.LEFT_REAR_MOTOR);
+  // private WPI_VictorSPX rightFrontVictor = new WPI_VictorSPX(RobotMap.RIGHT_FRONT_MOTOR);
+  // private WPI_VictorSPX leftRearVictor = new WPI_VictorSPX(RobotMap.LEFT_REAR_MOTOR);
+  // private WPI_VictorSPX rightRearVictor = new WPI_VictorSPX(RobotMap.RIGHT_REAR_MOTOR);
 
-  private WPI_TalonSRX leftFrontTalon = new WPI_TalonSRX(RobotMap.LEFT_REAR_MOTOR);
+  private WPI_TalonSRX leftFrontTalon = new WPI_TalonSRX(RobotMap.LEFT_FRONT_MOTOR);
   private WPI_TalonSRX rightFrontTalon = new WPI_TalonSRX(RobotMap.RIGHT_FRONT_MOTOR);
   private WPI_TalonSRX leftRearTalon = new WPI_TalonSRX(RobotMap.LEFT_REAR_MOTOR);
   private WPI_TalonSRX rightRearTalon = new WPI_TalonSRX(RobotMap.RIGHT_REAR_MOTOR);
 
-  private WPI_VictorSPX testMotor = new WPI_VictorSPX(0);
+  // private WPI_VictorSPX testMotor = new WPI_VictorSPX(0);
 
   ControllerSubsytem control = new ControllerSubsytem();
 
@@ -47,10 +48,13 @@ public class DriveSubsystem extends Subsystem {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
     control.setController(RobotMap.JOYSTICK_DRIVE_ONE);
+
+    difDrive.setSafetyEnabled(false);
   }
 
 
 	public void drive() {
+    OI.controller.setRumble(RumbleType.kRightRumble, 1);
 		double turn = 0;
 		double throttle = 0;
 		//Controller Drive
@@ -78,11 +82,11 @@ public class DriveSubsystem extends Subsystem {
   }
   
   public void testMotors() {
-    testMotor.set(control.getTrigerThrottle(OI.controller.getTwist(), OI.controller.getThrottle()));
+    // testMotor.set(control.getTrigerThrottle(OI.controller.getTwist(), OI.controller.getThrottle()));
   }
 
     public void stop() {
-    	computerDrive(0,0);
+    	// computerDrive(0,0);
 		
 	}
 

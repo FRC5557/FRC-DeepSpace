@@ -31,10 +31,10 @@ public class RobotMap {
 	
 		//	DRIVE TRAIN
 
-	public static final int LEFT_REAR_MOTOR = 3; //Encoder on this one, counts down when driving forward
-	public static final int LEFT_FRONT_MOTOR = 4; 
-	public static final int RIGHT_FRONT_MOTOR = 2;//Encoder on this one, counts up when driving forward
-	public static final int RIGHT_REAR_MOTOR = 1; 
+	public static final int LEFT_REAR_MOTOR = 4; //Encoder on this one, counts down when driving forward
+	public static final int LEFT_FRONT_MOTOR = 6; 
+	public static final int RIGHT_FRONT_MOTOR = 1;//Encoder on this one, counts up when driving forward
+	public static final int RIGHT_REAR_MOTOR = 2; 
 		
 	// some controller ports
 	public static int JOYSTICK_DRIVE_ONE = 0;
@@ -47,8 +47,9 @@ public class RobotMap {
 	// CONTROLLER BUTTONS HERE
 
 	//TODO: MAP THESE TO ACTUAL BUTTONS
-	public static int HATCH_FORWARD_BUTTON = 0;
-	public static int HATCH_REVERSE_BUTTON = 1;
+	public static int HATCH_FORWARD_BUTTON = 1;
+	public static int HATCH_REVERSE_BUTTON = 2;
+	public static int TEST_RUMBLE_BUTTON = 6;
 
 	
 }

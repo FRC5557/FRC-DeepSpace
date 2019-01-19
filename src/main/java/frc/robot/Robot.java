@@ -16,9 +16,14 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.RumbleCommand;
 
 // import com.ctre
 
@@ -35,7 +40,11 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
+  PowerDistributionPanel pdp = new PowerDistributionPanel();
+
   DriveSubsystem drive = new DriveSubsystem();
+
+  Joystick controller = new Joystick(RobotMap.JOYSTICK_DRIVE_ONE);
 
   OI oi = new OI();
 
@@ -62,6 +71,9 @@ public class Robot extends TimedRobot {
     // drive.
     drive.setMotorsCoast();
 
+    Button rumbleButton = new JoystickButton(controller, RobotMap.TEST_RUMBLE_BUTTON);
+    rumbleButton.whenPressed(new RumbleCommand());
+    rumbleButton.close();
     super.teleopInit();
   }
 
@@ -75,6 +87,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    pdp.clearStickyFaults();
+
   }
 
   /**
@@ -117,11 +131,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    System.out.println("Teleop Periodic!");
+    // System.out.println("Teleop Periodic!");
 
     // run this command for actual driving
     drive.drive();
 
+    // controller.setRumble(RumbleType.kRightRumble, 1);
+    // controller.setRumble(type, value);
     // below command is for that 1 test motor on beta bot
     // drive.testMotors();
   }
