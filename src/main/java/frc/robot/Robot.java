@@ -7,9 +7,14 @@
 
 package frc.robot;
 
+import java.net.URI;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.handshake.ServerHandshake;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -53,7 +58,7 @@ public class Robot extends TimedRobot {
   NetworkTableEntry tx = table.getEntry("tx");
   NetworkTableEntry ty = table.getEntry("ty");
   NetworkTableEntry ta = table.getEntry("ta");
-  
+  WebSocketClient mWs;
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -63,7 +68,39 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
-    
+    try {
+      mWs = new WebSocketClient( new URI( "ws://localhost:7000/" ))  {
+          @Override
+          public void onMessage( String message ) {
+          //  JSONObject obj = new JSONObject(message);
+          //  String channel = obj.getString("channel");
+          }
+
+          @Override
+          public void onOpen( ServerHandshake handshake ) {
+              System.out.println( "opened connection" );
+              
+              //send message
+              this.send("Damn i just testing bro pt2");
+              System.out.println( "message seent!" );
+          }
+
+          @Override
+          public void onClose( int code, String reason, boolean remote ) {
+              System.out.println( "closed connection" );
+          }
+
+          @Override
+          public void onError( Exception ex ) {
+              ex.printStackTrace();
+          }
+
+      };
+      mWs.connect();
+  } catch(Exception e) {
+      System.out.println(e.getLocalizedMessage());
+  }
+      
   }
 
   @Override
