@@ -134,10 +134,10 @@ public class Robot extends TimedRobot {
     // System.out.println("Teleop Periodic!");
 
     // run this command for actual driving
-    // drive.drive();
+    drive.drive();
 
     // this command is for testing limelight tracking
-    drive.followTarget();
+    // drive.followTarget();
 
     // controller.setRumble(RumbleType.kRightRumble, 1);
     // controller.setRumble(type, value);

@@ -31,11 +31,19 @@ public class RobotMap {
 	
 		//	DRIVE TRAIN
 
+		// BETA BOT MAPS
+	// public static final int LEFT_REAR_MOTOR = 4; //Encoder on this one, counts down when driving forward
+	// public static final int LEFT_FRONT_MOTOR = 6; 
+	// public static final int RIGHT_FRONT_MOTOR = 1;//Encoder on this one, counts up when driving forward
+	// public static final int RIGHT_REAR_MOTOR = 2; 
+		
+	// OMEGA BOT
 	public static final int LEFT_REAR_MOTOR = 4; //Encoder on this one, counts down when driving forward
-	public static final int LEFT_FRONT_MOTOR = 6; 
+	public static final int LEFT_FRONT_MOTOR = 3; 
 	public static final int RIGHT_FRONT_MOTOR = 1;//Encoder on this one, counts up when driving forward
 	public static final int RIGHT_REAR_MOTOR = 2; 
-		
+
+
 	// some controller ports
 	public static int JOYSTICK_DRIVE_ONE = 0;
 	public static int JOYSTICK_DRIVE_TWO = 1;
