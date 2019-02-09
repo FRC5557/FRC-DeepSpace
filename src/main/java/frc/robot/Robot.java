@@ -7,21 +7,28 @@
 
 package frc.robot;
 
+import java.net.InetSocketAddress;
 import java.net.URI;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
+import org.java_websocket.WebSocket;
 import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.handshake.ServerHandshake;
+import org.java_websocket.server.WebSocketServer;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -44,6 +51,7 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  private boolean teleopOn = false;
 
   PowerDistributionPanel pdp = new PowerDistributionPanel();
 
@@ -51,7 +59,11 @@ public class Robot extends TimedRobot {
 
   Joystick controller = new Joystick(RobotMap.JOYSTICK_DRIVE_ONE);
 
+  Compressor c = new Compressor(0);
+
   OI oi = new OI();
+
+  DoubleSolenoid solenoid;
 
 
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
@@ -68,50 +80,21 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
-    try {
-      mWs = new WebSocketClient( new URI( "ws://localhost:7000/" ))  {
-          @Override
-          public void onMessage( String message ) {
-          //  JSONObject obj = new JSONObject(message);
-          //  String channel = obj.getString("channel");
-          }
-
-          @Override
-          public void onOpen( ServerHandshake handshake ) {
-              System.out.println( "opened connection" );
-              
-              //send message
-              this.send("Damn i just testing bro pt2");
-              System.out.println( "message seent!" );
-          }
-
-          @Override
-          public void onClose( int code, String reason, boolean remote ) {
-              System.out.println( "closed connection" );
-          }
-
-          @Override
-          public void onError( Exception ex ) {
-              ex.printStackTrace();
-          }
-
-      };
-      mWs.connect();
-  } catch(Exception e) {
-      System.out.println(e.getLocalizedMessage());
-  }
-      
+    this.solenoid = new DoubleSolenoid(0, 1);
+   
   }
 
   @Override
   public void teleopInit() {
     // drive.
     drive.setMotorsCoast();
-
+    teleopOn = true;
     Button rumbleButton = new JoystickButton(controller, RobotMap.TEST_RUMBLE_BUTTON);
     rumbleButton.whenPressed(new RumbleCommand());
     rumbleButton.close();
+    // c.setClosedLoopControl(true);
     super.teleopInit();
+    
   }
 
   /**
@@ -125,7 +108,9 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     pdp.clearStickyFaults();
-
+    if(controller.getRawButtonPressed(6)) {
+      System.out.println("pressing button 6");
+    }
   }
 
   /**
@@ -171,15 +156,33 @@ public class Robot extends TimedRobot {
     // System.out.println("Teleop Periodic!");
 
     // run this command for actual driving
-    drive.drive();
-
+     drive.drive();
+     
+    //  c.getCompressorCurrent();
+     if(controller.getRawButtonPressed(6)) {
+       solenoid.set(DoubleSolenoid.Value.kForward);
+     } else if(controller.getRawButtonPressed(5)) {
+      solenoid.set(DoubleSolenoid.Value.kReverse);
+      // solenoid.
+      System.out.println(solenoid.get());
+    }
+    //  System.out.println(c.getCompressorCurrent());
+     
+     
     // this command is for testing limelight tracking
-    // drive.followTarget();
+    //drive.followTarget();
 
     // controller.setRumble(RumbleType.kRightRumble, 1);
     // controller.setRumble(type, value);
     // below command is for that 1 test motor on beta bot
     // drive.testMotors();
+  }
+
+  @Override
+  public void disabledInit() {
+    solenoid.set(DoubleSolenoid.Value.kOff);
+
+    super.disabledInit();
   }
 
 

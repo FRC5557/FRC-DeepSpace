@@ -8,18 +8,22 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class PneumaticsTestCommand extends Command {
-  DoubleSolenoid solenoid;
+  Solenoid solenoid;
 
 
-  public PneumaticsTestCommand(int port1, int port2) {
+  public PneumaticsTestCommand(Solenoid solenoid) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   
-    this.solenoid = new DoubleSolenoid(port1, port2);
+    this.solenoid = solenoid;
+    this.solenoid.set(true);
+    System.out.println("called on command");
+
   }
 
   // Called just before this Command runs the first time
@@ -30,7 +34,6 @@ public class PneumaticsTestCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -44,17 +47,6 @@ public class PneumaticsTestCommand extends Command {
   protected void end() {
   }
 
-  void forward() {
-    this.solenoid.set(Value.kForward);
-  }
-
-  void reverse() {
-    this.solenoid.set(Value.kReverse);
-  }
-
-  void off() {
-    this.solenoid.set(Value.kOff);
-  }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run

@@ -25,12 +25,6 @@ public final class Main {
    */
   public static void main(String... args) {
     RobotBase.startRobot(Robot::new);
-    try {
-      WebsocketClient client = new WebsocketClient(8010);
-      client.start();
-    } catch(Exception e) {
-      System.out.println(e.getLocalizedMessage());
-    }
     
   }
 }

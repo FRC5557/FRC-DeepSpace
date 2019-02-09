@@ -62,6 +62,10 @@ public class DriveSubsystem extends Subsystem {
     difDrive.setSafetyEnabled(false);
   }
 
+  public void websocketDrive(double turn, double throttle) {
+    difDrive.arcadeDrive(throttle, turn);
+  }
+
 
 	public void drive() {
     OI.controller.setRumble(RumbleType.kRightRumble, 1);
@@ -86,7 +90,7 @@ public class DriveSubsystem extends Subsystem {
       // then go forward while y > 1 (to be safe)
       if(x <= 2 && x >= -2) {
         System.out.println("LESS THAN 2 AND GREATER THAN 2");
-        if(y < -7) {
+        if(y >= 11) {
           difDrive.arcadeDrive(0, 0);
         } else {
           difDrive.arcadeDrive(0.5, 0);
