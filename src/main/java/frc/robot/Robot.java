@@ -64,6 +64,7 @@ public class Robot extends TimedRobot {
   OI oi = new OI();
 
   DoubleSolenoid solenoid;
+  DoubleSolenoid solenoid2;
 
 
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
@@ -81,7 +82,7 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
     this.solenoid = new DoubleSolenoid(0, 1);
-   
+    this.solenoid2 = new DoubleSolenoid(2, 3);
   }
 
   @Override
@@ -166,6 +167,18 @@ public class Robot extends TimedRobot {
       // solenoid.
       System.out.println(solenoid.get());
     }
+
+    if(controller.getRawButtonPressed(2)) {
+      // move window motor
+      // drive.testWindowMotor();
+      solenoid2.set(DoubleSolenoid.Value.kForward);
+    } else if(controller.getRawButtonPressed(3)){
+      // stop window motor
+      // drive.stopWindowMotor();
+      solenoid2.set(DoubleSolenoid.Value.kReverse);
+    }
+
+    
     //  System.out.println(c.getCompressorCurrent());
      
      

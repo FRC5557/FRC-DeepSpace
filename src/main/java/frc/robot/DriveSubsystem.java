@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -32,6 +33,8 @@ public class DriveSubsystem extends Subsystem {
   private WPI_TalonSRX rightFrontTalon = new WPI_TalonSRX(RobotMap.RIGHT_FRONT_MOTOR);
   private WPI_TalonSRX leftRearTalon = new WPI_TalonSRX(RobotMap.LEFT_REAR_MOTOR);
   private WPI_TalonSRX rightRearTalon = new WPI_TalonSRX(RobotMap.RIGHT_REAR_MOTOR);
+
+  private WPI_VictorSPX victor = new WPI_VictorSPX(0);
 
   // private WPI_VictorSPX testMotor = new WPI_VictorSPX(0);
 
@@ -135,6 +138,14 @@ public class DriveSubsystem extends Subsystem {
 
   public void computerDrive(double speed, double rotate) {
 		difDrive.arcadeDrive(speed, rotate);
+  }
+
+  public void testWindowMotor() {
+    victor.set(100);
+  }
+
+  public void stopWindowMotor() {
+    victor.stopMotor();
   }
   
   public void testMotors() {
