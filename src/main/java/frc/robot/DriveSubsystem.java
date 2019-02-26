@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import frc.robot.commands.CloseHatchSolenoid;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -120,36 +121,32 @@ public class DriveSubsystem extends Subsystem {
 		difDrive.arcadeDrive(Y,rotation);
   }
 
-  public void followTarget() {
+  public void alignAndPlaceHatch() {
     double x = tx.getDouble(0.0);
     double y = ty.getDouble(0.0);
     double area = ta.getDouble(0.0);
     double hasTargets = tv.getDouble(0.0);
     if(hasTargets == 1.0) {
-      
-      // System.out.println("X: " + x);
-      // go left / right until x <= 1 or x >= -1
-      // if x > 1 turn left else turn right slowly
-      // then go forward while y > 1 (to be safe)
       if(x <= 2 && x >= -2) {
-        System.out.println("LESS THAN 2 AND GREATER THAN 2");
+        // in alignment range
+        // TODO: Adjust this to right Y values / area values
         if(y >= 11) {
           difDrive.arcadeDrive(0, 0);
+          // its in position! place hatch
+          new CloseHatchSolenoid();
         } else {
+          // approaching hatch
           difDrive.arcadeDrive(0.5, 0);
+          
         }
       } else {
         
         if (x > 1) {
-          // turn left
-          System.out.println("LEFT");
-
+          // Turn left to align
           difDrive.arcadeDrive(0.2, 0.5);
           
         } else {
-          // turn right
-          System.out.println("RIGHT");
-
+          // Turn right to align
           difDrive.arcadeDrive(0.2, -0.5);
         }
         
@@ -158,9 +155,7 @@ public class DriveSubsystem extends Subsystem {
       
 
     } else {
-      double turn = 0.5;
-      double throttle = 0.3;
-      difDrive.arcadeDrive(throttle,turn);
+      return;
     }
   }
 
@@ -182,7 +177,7 @@ public class DriveSubsystem extends Subsystem {
 		difDrive.arcadeDrive(speed, rotate);
   }
 
-  public void testWindowMotor() {
+  public void windowMotorForward() {
     windowMotor.set(100);
   }
 
@@ -193,14 +188,10 @@ public class DriveSubsystem extends Subsystem {
   public void windowMotorBack() {
     windowMotor.set(-100);
   }
-  
-  public void testMotors() {
-    // testMotor.set(control.getTrigerThrottle(OI.controller.getTwist(), OI.controller.getThrottle()));
-  }
+
 
   public void stop() {
-    	// computerDrive(0,0);
-		
+  
 	}
 
 

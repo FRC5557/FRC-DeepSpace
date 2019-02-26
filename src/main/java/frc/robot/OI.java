@@ -7,11 +7,14 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.CloseHatchSolenoid;
+import frc.robot.commands.IntakeForward;
+import frc.robot.commands.IntakeReverse;
+import frc.robot.commands.OpenHatchSolenoid;
+
 
 /**
  * Pretty much OI is meant to handle certain cases with the controller (joystick or whatever youre using)
@@ -19,30 +22,19 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 public class OI {
 
     public static final Joystick controller = new Joystick(RobotMap.JOYSTICK_DRIVE_ONE);
+
+    private final Button closeHatchButton = new JoystickButton(controller, 2);
+    private final Button openHatchButton = new JoystickButton(controller, 3);
+
+    private final Button intakeForwardButton = new JoystickButton(controller, 6);
+    private final Button intakeReverseButton = new JoystickButton(controller, 5);
     
-
-
-    // public static final I2C colorSensor = new I2C(I2C.Port.kOnboard, 0x39);
-
-    private final Button linearActuatorButton = new JoystickButton(controller, 13);
-    private final Button linearActuatorBackButton = new JoystickButton(controller, 12);
-
-    // add buttons here when we know what our hatch system is doing
-
-    // Solenoid solenoid = new Solenoid(0);
-
     public OI() {
-        // when we make some arm buttons or such, modify code here
-        // hatchForwardButton.whenPressed(new PneumaticsTestCommand(1, 2));
-        //TODO: HAVE COMMAND FOR EACH PNEUMATICS THINGY AND MAP TO BUTTONS
-        // solenoidOnButton.whileHeld(new PneumaticsTestCommand(solenoid));
-        // solenoidOffButton.whileHeld(new SolenoidOffCommand(solenoid));
-        // linearActuatorButton.whileHeld(new LinearActuatorForwardCommand());
-        // linearActuatorBackButton.whileHeld(new LinearActuatorBackCommand());
-        //
+        closeHatchButton.whenPressed(new CloseHatchSolenoid());
+        openHatchButton.whenPressed(new OpenHatchSolenoid());
+        
+        intakeForwardButton.whenPressed(new IntakeForward());
+        intakeReverseButton.whenPressed(new IntakeReverse());
     }
-
-
-
 
 }

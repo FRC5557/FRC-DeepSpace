@@ -7,29 +7,28 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.InstantCommand;
-import frc.robot.subsystems.PneumaticSubsystem;
+import frc.robot.DriveSubsystem;
 
 /**
  * Add your docs here.
  */
-public class CloseHatchSolenoid extends InstantCommand {
+public class WindowMotorForward extends InstantCommand {
   /**
    * Add your docs here.
    */
-  PneumaticSubsystem pneumaticSubsystem = PneumaticSubsystem.getInstance();
-  public CloseHatchSolenoid() {
+  DriveSubsystem drive = DriveSubsystem.getInstance();
+  public WindowMotorForward() {
     super();
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(pneumaticSubsystem);
+    requires(drive);
   }
 
   // Called once when the command executes
   @Override
   protected void initialize() {
-    pneumaticSubsystem.solenoid2.set(Value.kForward);
+    drive.windowMotorForward();
   }
 
 }

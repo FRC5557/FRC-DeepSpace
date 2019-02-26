@@ -14,12 +14,12 @@ import frc.robot.subsystems.PneumaticSubsystem;
 /**
  * Add your docs here.
  */
-public class CloseHatchSolenoid extends InstantCommand {
+public class IntakeReverse extends InstantCommand {
   /**
    * Add your docs here.
    */
   PneumaticSubsystem pneumaticSubsystem = PneumaticSubsystem.getInstance();
-  public CloseHatchSolenoid() {
+  public IntakeReverse() {
     super();
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -29,7 +29,7 @@ public class CloseHatchSolenoid extends InstantCommand {
   // Called once when the command executes
   @Override
   protected void initialize() {
-    pneumaticSubsystem.solenoid2.set(Value.kForward);
+    pneumaticSubsystem.solenoid.set(Value.kReverse);
   }
 
 }

@@ -177,51 +177,35 @@ public class Robot extends TimedRobot {
      
     
      
-     if(OI.controller.getRawButtonPressed(6)) {
+    //  if(OI.controller.getRawButtonPressed(6)) {
        
-      pneumaticsSubsystem.solenoid.set(DoubleSolenoid.Value.kForward);
-     } else if(OI.controller.getRawButtonPressed(5)) {
-      pneumaticsSubsystem.solenoid.set(DoubleSolenoid.Value.kReverse);
-      // solenoid.
-      System.out.println(pneumaticsSubsystem.solenoid.get());
-    }
+    //   pneumaticsSubsystem.solenoid.set(DoubleSolenoid.Value.kForward);
+    //  } else if(OI.controller.getRawButtonPressed(5)) {
+    //   pneumaticsSubsystem.solenoid.set(DoubleSolenoid.Value.kReverse);
+    //   // solenoid.
+    //   System.out.println(pneumaticsSubsystem.solenoid.get());
+    // }
 
-    if(OI.controller.getRawButtonPressed(2)) {
+    // if(OI.controller.getRawButtonPressed(2)) {
      
-      pneumaticsSubsystem.solenoid2.set(DoubleSolenoid.Value.kForward);
-    } else if(OI.controller.getRawButtonPressed(3)){
-      pneumaticsSubsystem.solenoid2.set(DoubleSolenoid.Value.kReverse);
-    }
+    //   pneumaticsSubsystem.solenoid2.set(DoubleSolenoid.Value.kForward);
+    // } else if(OI.controller.getRawButtonPressed(3)){
+    //   pneumaticsSubsystem.solenoid2.set(DoubleSolenoid.Value.kReverse);
+    // }
 
     if(OI.controller.getRawButtonPressed(1)) {
        // move window motor
-      drive.testWindowMotor();
+      drive.windowMotorForward();
     } else if(OI.controller.getRawButtonPressed(4)){
       drive.windowMotorBack();
     } else {
        // stop window motor
       drive.stopWindowMotor();
     }
-
-    // if(controller.getRawButtonPressed(13)) {
-    //     drive.testLinearActuator();
-    //     // System.out.println(this.ai.getVoltn(12)) {
-    //     drive.linearActuatorBackwords();
-    //   } else {age());
-    //   } else if(controller.getRawButto
-    //     drive.stopLinearActuator();
-    //   }
-
-   
-    
-    //  System.out.println(c.getCompressorCurrent());
-     
-     
+          
     // this command is for testing limelight tracking
     //drive.followTarget();
-
-    // controller.setRumble(RumbleType.kRightRumble, 1);
-    // controller.setRumble(type, value);
+    
     // below command is for that 1 test motor on beta bot
     // drive.testMotors();  
   }
