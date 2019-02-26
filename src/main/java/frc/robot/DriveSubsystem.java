@@ -6,9 +6,11 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
+import edu.wpi.first.hal.sim.mockdata.AnalogInDataJNI;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -29,17 +31,21 @@ public class DriveSubsystem extends Subsystem {
   // private WPI_VictorSPX leftRearVictor = new WPI_VictorSPX(RobotMap.LEFT_REAR_MOTOR);
   // private WPI_VictorSPX rightRearVictor = new WPI_VictorSPX(RobotMap.RIGHT_REAR_MOTOR);
 
+  private static DriveSubsystem instance = null;
+
   private WPI_TalonSRX leftFrontTalon = new WPI_TalonSRX(RobotMap.LEFT_FRONT_MOTOR);
   private WPI_TalonSRX rightFrontTalon = new WPI_TalonSRX(RobotMap.RIGHT_FRONT_MOTOR);
   private WPI_TalonSRX leftRearTalon = new WPI_TalonSRX(RobotMap.LEFT_REAR_MOTOR);
   private WPI_TalonSRX rightRearTalon = new WPI_TalonSRX(RobotMap.RIGHT_REAR_MOTOR);
 
-  private WPI_VictorSPX victor = new WPI_VictorSPX(0);
+  private WPI_TalonSRX windowMotor = new WPI_TalonSRX(RobotMap.WINDOW_MOTOR);
 
+  private WPI_TalonSRX betaBotActuator = new WPI_TalonSRX(2);
   // private WPI_VictorSPX testMotor = new WPI_VictorSPX(0);
 
   ControllerSubsytem control = new ControllerSubsytem();
 
+  // AnalogInput ai;
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
   NetworkTableEntry tx = table.getEntry("tx");
   NetworkTableEntry ty = table.getEntry("ty");
@@ -55,19 +61,39 @@ public class DriveSubsystem extends Subsystem {
 	SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightFrontTalon, rightRearTalon);
 	DifferentialDrive difDrive = new DifferentialDrive(leftGroup, rightGroup);
 
-
+  public static DriveSubsystem getInstance() {
+		if(instance == null) {
+			instance = new DriveSubsystem();
+		}
+		return instance;
+	}
+  
+  
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
     control.setController(RobotMap.JOYSTICK_DRIVE_ONE);
-
+    // this.ai = new AnalogInput(0);
     difDrive.setSafetyEnabled(false);
   }
 
   public void websocketDrive(double turn, double throttle) {
     difDrive.arcadeDrive(throttle, turn);
   }
+
+  public void testLinearActuator() {
+    betaBotActuator.set(0.7);
+  }
+
+  public void stopLinearActuator() {
+    betaBotActuator.set(0);
+  }
+
+  public void linearActuatorBackwords() {
+    betaBotActuator.set(-0.7);
+  }
+
 
 
 	public void drive() {
@@ -79,7 +105,21 @@ public class DriveSubsystem extends Subsystem {
 		throttle = control.getTrigerThrottle(OI.controller.getTwist(), OI.controller.getThrottle());
 		difDrive.arcadeDrive(throttle,turn);
   }
-  
+
+  public void joystickDrive() {
+    double X = OI.controller.getX();
+		double Y = OI.controller.getY();
+		double rotation = OI.controller.getZ();
+		difDrive.arcadeDrive(Y,rotation);
+  }
+ 
+  public void joystickDriveHalfSpeed() {
+    double X = OI.controller.getX() / 2;
+		double Y = OI.controller.getY() / 2;
+		double rotation = OI.controller.getZ() / 2;
+		difDrive.arcadeDrive(Y,rotation);
+  }
+
   public void followTarget() {
     double x = tx.getDouble(0.0);
     double y = ty.getDouble(0.0);
@@ -112,6 +152,8 @@ public class DriveSubsystem extends Subsystem {
 
           difDrive.arcadeDrive(0.2, -0.5);
         }
+        
+
       }
       
 
@@ -141,18 +183,22 @@ public class DriveSubsystem extends Subsystem {
   }
 
   public void testWindowMotor() {
-    victor.set(100);
+    windowMotor.set(100);
   }
 
   public void stopWindowMotor() {
-    victor.stopMotor();
+    windowMotor.stopMotor();
+  }
+
+  public void windowMotorBack() {
+    windowMotor.set(-100);
   }
   
   public void testMotors() {
     // testMotor.set(control.getTrigerThrottle(OI.controller.getTwist(), OI.controller.getThrottle()));
   }
 
-    public void stop() {
+  public void stop() {
     	// computerDrive(0,0);
 		
 	}

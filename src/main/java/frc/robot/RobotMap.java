@@ -37,17 +37,18 @@ public class RobotMap {
 	//  public static final int RIGHT_FRONT_MOTOR = 1;//Encoder on this one, counts up when driving forward
 	//  public static final int RIGHT_REAR_MOTOR = 2;
 	
-		// beta bot inverse maps
-	//public static final int LEFT_REAR_MOTOR = 4; //Encoder on this one, counts down when driving forward
-	//public static final int LEFT_FRONT_MOTOR = 2; 
-	//public static final int RIGHT_FRONT_MOTOR = 4;//Encoder on this one, counts up when driving forward
-	//public static final int RIGHT_REAR_MOTOR = 2;
+		// beta bot inverse maps // 6
+	// public static final int LEFT_REAR_MOTOR = 4; //Encoder on this one, counts down when driving forward
+	// public static final int LEFT_FRONT_MOTOR = 6; 
+	// public static final int RIGHT_FRONT_MOTOR = 2;//Encoder on this one, counts up when driving forward
+	// public static final int RIGHT_REAR_MOTOR = 1; // 6
 		
 	// OMEGA BOT
 	 public static final int LEFT_REAR_MOTOR = 4; //Encoder on this one, counts down when driving forward
 	 public static final int LEFT_FRONT_MOTOR = 3; 
 	 public static final int RIGHT_FRONT_MOTOR = 1;//Encoder on this one, counts up when driving forward
 	 public static final int RIGHT_REAR_MOTOR = 2; 
+	 public static final int WINDOW_MOTOR = 5;
 
 
 	// some controller ports
@@ -58,12 +59,14 @@ public class RobotMap {
 	public static int HATCH_SOLENOID_ONE = 0;
 	public static int HATCH_SOLENOID_TWO = 1;
 
-	// CONTROLLER BUTTONS HERE
+	//
 
 	//TODO: MAP THESE TO ACTUAL BUTTONS
 	public static int HATCH_FORWARD_BUTTON = 6;
 	public static int HATCH_REVERSE_BUTTON =5;
 	public static int TEST_RUMBLE_BUTTON = 6;
+
+	public static boolean HALF_SPEED = false;
 
 	
 }

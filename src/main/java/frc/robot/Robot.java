@@ -20,9 +20,11 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.handshake.ServerHandshake;
 import org.java_websocket.server.WebSocketServer;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -35,7 +37,8 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.RumbleCommand;
+import frc.robot.subsystems.PneumaticSubsystem;
+
 
 // import com.ctre
 
@@ -53,18 +56,19 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private boolean teleopOn = false;
 
+  // AnalogInput ai;
+
   PowerDistributionPanel pdp = new PowerDistributionPanel();
 
-  DriveSubsystem drive = new DriveSubsystem();
+  DriveSubsystem drive =  DriveSubsystem.getInstance();
 
-  Joystick controller = new Joystick(RobotMap.JOYSTICK_DRIVE_ONE);
-
-  Compressor c = new Compressor(0);
+  
 
   OI oi = new OI();
 
-  DoubleSolenoid solenoid;
-  DoubleSolenoid solenoid2;
+  PneumaticSubsystem pneumaticsSubsystem = PneumaticSubsystem.getInstance();
+
+ 
 
 
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
@@ -81,8 +85,9 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
-    this.solenoid = new DoubleSolenoid(0, 1);
-    this.solenoid2 = new DoubleSolenoid(2, 3);
+    
+    // this.ai = new AnalogInput(0);
+    CameraServer.getInstance().startAutomaticCapture();
   }
 
   @Override
@@ -90,10 +95,8 @@ public class Robot extends TimedRobot {
     // drive.
     drive.setMotorsCoast();
     teleopOn = true;
-    Button rumbleButton = new JoystickButton(controller, RobotMap.TEST_RUMBLE_BUTTON);
-    rumbleButton.whenPressed(new RumbleCommand());
-    rumbleButton.close();
-    // c.setClosedLoopControl(true);
+    
+    pneumaticsSubsystem.c.setClosedLoopControl(true);
     super.teleopInit();
     
   }
@@ -109,9 +112,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     pdp.clearStickyFaults();
-    if(controller.getRawButtonPressed(6)) {
-      System.out.println("pressing button 6");
-    }
+    
   }
 
   /**
@@ -158,26 +159,60 @@ public class Robot extends TimedRobot {
 
     // run this command for actual driving
      drive.drive();
+
+    // run this comamand to drive with joystick
+    // if(controller.getRawButtonPressed(11)) {
+    //   if(RobotMap.HALF_SPEED) {
+    //     RobotMap.HALF_SPEED = false;
+    //   } else {
+    //     RobotMap.HALF_SPEED = true;
+    //   }
+    // }
+
+    // if(RobotMap.HALF_SPEED) {
+    //   drive.joystickDriveHalfSpeed();
+    // } else {
+    //   drive.joystickDrive();
+    // }
      
-    //  c.getCompressorCurrent();
-     if(controller.getRawButtonPressed(6)) {
-       solenoid.set(DoubleSolenoid.Value.kForward);
-     } else if(controller.getRawButtonPressed(5)) {
-      solenoid.set(DoubleSolenoid.Value.kReverse);
+    
+     
+     if(OI.controller.getRawButtonPressed(6)) {
+       
+      pneumaticsSubsystem.solenoid.set(DoubleSolenoid.Value.kForward);
+     } else if(OI.controller.getRawButtonPressed(5)) {
+      pneumaticsSubsystem.solenoid.set(DoubleSolenoid.Value.kReverse);
       // solenoid.
-      System.out.println(solenoid.get());
+      System.out.println(pneumaticsSubsystem.solenoid.get());
     }
 
-    if(controller.getRawButtonPressed(2)) {
-      // move window motor
-      // drive.testWindowMotor();
-      solenoid2.set(DoubleSolenoid.Value.kForward);
-    } else if(controller.getRawButtonPressed(3)){
-      // stop window motor
-      // drive.stopWindowMotor();
-      solenoid2.set(DoubleSolenoid.Value.kReverse);
+    if(OI.controller.getRawButtonPressed(2)) {
+     
+      pneumaticsSubsystem.solenoid2.set(DoubleSolenoid.Value.kForward);
+    } else if(OI.controller.getRawButtonPressed(3)){
+      pneumaticsSubsystem.solenoid2.set(DoubleSolenoid.Value.kReverse);
     }
 
+    if(OI.controller.getRawButtonPressed(1)) {
+       // move window motor
+      drive.testWindowMotor();
+    } else if(OI.controller.getRawButtonPressed(4)){
+      drive.windowMotorBack();
+    } else {
+       // stop window motor
+      drive.stopWindowMotor();
+    }
+
+    // if(controller.getRawButtonPressed(13)) {
+    //     drive.testLinearActuator();
+    //     // System.out.println(this.ai.getVoltn(12)) {
+    //     drive.linearActuatorBackwords();
+    //   } else {age());
+    //   } else if(controller.getRawButto
+    //     drive.stopLinearActuator();
+    //   }
+
+   
     
     //  System.out.println(c.getCompressorCurrent());
      
@@ -188,13 +223,13 @@ public class Robot extends TimedRobot {
     // controller.setRumble(RumbleType.kRightRumble, 1);
     // controller.setRumble(type, value);
     // below command is for that 1 test motor on beta bot
-    // drive.testMotors();
+    // drive.testMotors();  
   }
 
   @Override
   public void disabledInit() {
-    solenoid.set(DoubleSolenoid.Value.kOff);
-
+    pneumaticsSubsystem.solenoid.set(DoubleSolenoid.Value.kOff);
+    pneumaticsSubsystem.c.setClosedLoopControl(false);
     super.disabledInit();
   }
 
