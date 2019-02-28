@@ -37,6 +37,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.PneumaticSubsystem;
 
 
@@ -94,6 +95,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     // drive.
     drive.setMotorsCoast();
+    drive.setLedValue(-0.55);
     teleopOn = true;
     
     pneumaticsSubsystem.c.setClosedLoopControl(true);

@@ -5,16 +5,20 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot;
+package frc.robot.subsystems;
 import edu.wpi.first.hal.sim.mockdata.AnalogInDataJNI;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import frc.robot.ControllerSubsytem;
+import frc.robot.OI;
+import frc.robot.RobotMap;
 import frc.robot.commands.CloseHatchSolenoid;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -42,6 +46,8 @@ public class DriveSubsystem extends Subsystem {
   private WPI_TalonSRX windowMotor = new WPI_TalonSRX(RobotMap.WINDOW_MOTOR);
 
   private WPI_TalonSRX betaBotActuator = new WPI_TalonSRX(2);
+
+  Spark led = new Spark(0);
   // private WPI_VictorSPX testMotor = new WPI_VictorSPX(0);
 
   ControllerSubsytem control = new ControllerSubsytem();
@@ -157,6 +163,10 @@ public class DriveSubsystem extends Subsystem {
     } else {
       return;
     }
+  }
+
+  public void setLedValue(double value){
+    this.led.set(value);
   }
 
   public void setMotorsCoast() {

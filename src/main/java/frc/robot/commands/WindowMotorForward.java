@@ -8,7 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
-import frc.robot.DriveSubsystem;
+import frc.robot.subsystems.DriveSubsystem;
 
 /**
  * Add your docs here.
@@ -29,6 +29,7 @@ public class WindowMotorForward extends InstantCommand {
   @Override
   protected void initialize() {
     drive.windowMotorForward();
+    drive.setLedValue(0.31);
   }
 
 }
